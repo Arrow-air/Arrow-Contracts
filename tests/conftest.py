@@ -17,3 +17,8 @@ def token(ArrowToken, accounts):
 @pytest.fixture(scope="module")
 def admin(accounts):
     return accounts[0]
+
+@pytest.fixture(scope="module")
+def vestingFactory(ArrowVestingFactory, token, accounts):
+    return ArrowVestingFactory.deploy({'from': accounts[0]})
+
