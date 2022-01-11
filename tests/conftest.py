@@ -13,3 +13,7 @@ def isolate(fn_isolation):
 @pytest.fixture(scope="module")
 def token(ArrowToken, accounts):
     return ArrowToken.deploy(1e21, {'from': accounts[0]})
+
+@pytest.fixture(scope="module")
+def admin(accounts):
+    return accounts[0]
