@@ -1,6 +1,7 @@
 
 dependencies:
   - OpenZeppelin/openzeppelin-contracts@4.4.1
+  - OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1
 
 # path remapping to support imports from GitHub/NPM
 compiler:
@@ -8,3 +9,4 @@ compiler:
     version: 0.8.11
     remappings:
       - "@openzeppelin=OpenZeppelin/openzeppelin-contracts@4.4.1"
+      - "@openzeppelin-upgradeable=OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1"
