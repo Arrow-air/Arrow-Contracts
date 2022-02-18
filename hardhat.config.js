@@ -1,3 +1,5 @@
+require('hardhat-deploy');
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
