@@ -1,0 +1,28 @@
+{
+  "name": "arrow-contracts",
+  "version": "0.1.0",
+  "description": "Smart contracts defining the ArrowAir token and governance",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "brownie test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arrow-air/Arrow-Contracts.git"
+  },
+  "keywords": [
+    "vtol",
+    "web3",
+    "ethereum",
+    "Arrow"
+  ],
+  "author": "ArrowAir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Arrow-air/Arrow-Contracts/issues"
+  },
+  "homepage": "https://github.com/Arrow-air/Arrow-Contracts#readme"
+}
