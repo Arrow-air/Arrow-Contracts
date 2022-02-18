@@ -12,6 +12,13 @@ contract ArrowVestingFactory {
 
     address immutable vestingImplementation;
 
+    event newVestingAgreement(
+        address beneficiaryAddress,
+        uint64 startTimestamp,
+        uint64 durationSeconds,
+        address vestingWalletAddress
+    );
+
     constructor() {
         vestingImplementation = address(new ArrowVestingBase());
     }
@@ -25,9 +32,9 @@ contract ArrowVestingFactory {
         address beneficiaryAddress,
         uint64 startTimestamp,
         uint64 durationSeconds
-    ) external returns (address) {
-        address clone = Clones.clone(vestingImplementation);
+    ) external returns (address clone) {
+        clone = Clones.clone(vestingImplementation);
         ArrowVestingBase(payable(clone)).initialize(beneficiaryAddress, startTimestamp, durationSeconds);
-        return clone;
+        emit newVestingAgreement(beneficiaryAddress, startTimestamp, durationSeconds, payable(clone));
     }
 }
