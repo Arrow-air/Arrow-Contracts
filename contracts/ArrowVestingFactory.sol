@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.11;
 
 // SPDX-License-Identifier: MIT
 
@@ -12,7 +12,7 @@ contract ArrowVestingFactory {
 
     address immutable vestingImplementation;
 
-    constructor() public {
+    constructor() {
         vestingImplementation = address(new ArrowVestingBase());
     }
 
