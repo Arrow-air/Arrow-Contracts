@@ -11,7 +11,7 @@ import "./ArrowVestingBase.sol";
 contract ArrowVestingFactory {
     address immutable vestingImplementation;
 
-    constructor() public {
+    constructor() {
         vestingImplementation = address(new ArrowVestingBase());
     }
 

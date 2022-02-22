@@ -1,4 +1,3 @@
-
 dependencies:
   - OpenZeppelin/openzeppelin-contracts@4.4.1
   - OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1

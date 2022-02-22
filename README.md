@@ -1,28 +1,15 @@
-# Arrow Contracts
+# Basic Sample Hardhat Project
 
-Implementation of the Arrow token and governance smart contracts.
+This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
 
-## Installation
+Try running some of the following tasks:
 
-1. [Install Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html), if you haven't already.
-2. Run `npm install` to install required packages.
-
-## Testing
-
-To run the tests:
-
-```bash
-brownie test
+```shell
+npx hardhat accounts
+npx hardhat compile
+npx hardhat clean
+npx hardhat test
+npx hardhat node
+node scripts/sample-script.js
+npx hardhat help
 ```
-
-## Deployments
-
-### Rinkeby
-
-| Contract    | Address                                    |
-| ----------- | ------------------------------------------ |
-| Gnosis Safe | 0x6943eBEfCD7d85B536aEb35BBFd95C5699158Abe |
-
-## License
-
-This project is licensed under the [MIT license](LICENSE).
