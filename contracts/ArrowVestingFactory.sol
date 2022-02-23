@@ -7,7 +7,6 @@ import "./ArrowVestingBase.sol";
 /**
     Factory contract for creating vesting wallets from their base implementations.
  */
-/// @dev Should we make this upgradeable?
 contract ArrowVestingFactory {
     address immutable vestingImplementation;
 
