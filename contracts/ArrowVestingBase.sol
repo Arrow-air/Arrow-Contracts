@@ -9,14 +9,14 @@ contract ArrowVestingBase is VestingWalletUpgradeable {
     constructor() initializer {}
 
     function initialize(
-        address beneficiaryAddress,
-        uint64 startTimestamp,
-        uint64 durationSeconds
+        address _beneficiaryAddress,
+        uint64 _startTimestamp,
+        uint64 _durationSeconds
     ) public initializer {
         __VestingWallet_init(
-            beneficiaryAddress,
-            startTimestamp,
-            durationSeconds
+            _beneficiaryAddress,
+            _startTimestamp,
+            _durationSeconds
         );
     }
 }
