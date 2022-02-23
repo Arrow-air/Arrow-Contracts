@@ -10,4 +10,4 @@ Clone the repo and then run `npm install` to get started.
 
 ## Test
 
-Run `npx hardhat test` test conrtacts
+Run `npx hardhat test` test contracts
