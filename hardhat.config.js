@@ -11,7 +11,17 @@ require("@nomiclabs/hardhat-ethers");
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.11",
+  solidity: {
+    version: "0.8.11",
+    overrides: {
+      "@openzeppelin": "OpenZeppelin/openzeppelin-contracts@4.4.1",
+      "@openzeppelin-upgradeable":
+        "OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1",
+    },
+    settings: {
+      optimizer: { enabled: true, runs: 200 },
+    },
+  },
 
   networks: {
     optimismKovan: {
@@ -39,4 +49,5 @@ module.exports = {
       default: 0,
     },
   },
+  paths: {},
 };
