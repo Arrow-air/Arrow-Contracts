@@ -10,9 +10,9 @@ import "./ArrowVestingBase.sol";
  */
 contract ArrowVestingFactory {
 
-    address immutable vestingImplementation;
+    address public vestingImplementation;
 
-    event newVestingAgreement(
+    event NewVestingAgreement(
         address beneficiaryAddress,
         uint64 startTimestamp,
         uint64 durationSeconds,

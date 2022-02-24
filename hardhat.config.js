@@ -13,11 +13,11 @@ require("@nomiclabs/hardhat-ethers");
 module.exports = {
   solidity: {
     version: "0.8.11",
-    overrides: {
-      "@openzeppelin": "OpenZeppelin/openzeppelin-contracts@4.4.1",
-      "@openzeppelin-upgradeable":
-        "OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1",
-    },
+    // overrides: {
+    //   "@openzeppelin": "OpenZeppelin/openzeppelin-contracts@4.4.1",
+    //   "@openzeppelin-upgradeable":
+    //     "OpenZeppelin/openzeppelin-contracts-upgradeable@4.4.1",
+    // },
     settings: {
       optimizer: { enabled: true, runs: 200 },
     },
