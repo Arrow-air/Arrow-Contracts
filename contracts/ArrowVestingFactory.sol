@@ -20,15 +20,15 @@ contract ArrowVestingFactory {
         The wallet will initially be empty and should have appropriate ERC20 tokens and ETH transferred to it after creation.
      */
     function createVestingSchedule(
-        address _beneficiaryAddress,
-        uint64 _startTimestamp,
-        uint64 _durationSeconds
+        address beneficiaryAddress,
+        uint64 startTimestamp,
+        uint64 durationSeconds
     ) external returns (address) {
         address clone = Clones.clone(vestingImplementation);
         ArrowVestingBase(payable(clone)).initialize(
-            _beneficiaryAddress,
-            _startTimestamp,
-            _durationSeconds
+            beneficiaryAddress,
+            startTimestamp,
+            durationSeconds
         );
         return clone;
     }

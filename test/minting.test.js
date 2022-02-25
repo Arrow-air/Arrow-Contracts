@@ -20,14 +20,13 @@ describe("ArrowToken Minting", function () {
 
   it("Should mint tokens only by the owner", async function () {
     let amount_before = await arrowToken.balanceOf(owner.address);
-    await arrowToken.connect(owner).issueNewTokens(owner.address, amount);
+    await arrowToken.connect(owner).mint(owner.address, amount);
     let amount_after = await arrowToken.balanceOf(owner.address);
     expect(amount_after - amount_before).to.equal(amount);
 
     // no other accounts can mint if they are not owner
-    await expect(
-      arrowToken.connect(signer1).issueNewTokens(signer1.address, amount)
-    ).to.be.reverted;
+    await expect(arrowToken.connect(signer1).mint(signer1.address, amount)).to
+      .be.reverted;
     expect(await arrowToken.balanceOf(signer1.address)).to.equal(0);
   });
 
@@ -35,12 +34,11 @@ describe("ArrowToken Minting", function () {
     await arrowToken.transferOwnership(signer1.address);
 
     // old owner should not be able to mint tokens
-    await expect(
-      arrowToken.connect(owner).issueNewTokens(signer1.address, amount)
-    ).to.be.reverted;
+    await expect(arrowToken.connect(owner).mint(signer1.address, amount)).to.be
+      .reverted;
 
     let amount_before = await arrowToken.balanceOf(signer1.address);
-    await arrowToken.connect(signer1).issueNewTokens(signer1.address, amount);
+    await arrowToken.connect(signer1).mint(signer1.address, amount);
     let amount_after = await arrowToken.balanceOf(signer1.address);
     expect(amount_after - amount_before).to.equal(amount);
   });

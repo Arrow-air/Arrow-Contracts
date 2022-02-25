@@ -43,7 +43,7 @@ describe("Contract Upgrades", function () {
     });
 
     it("V2 should be able to mint tokens to self", async function () {
-      await arrowTokenV2.issueNewTokens(
+      await arrowTokenV2.mint(
         arrowTokenV2.address,
         ethers.BigNumber.from(1_000_000)
       );
@@ -59,7 +59,7 @@ describe("Contract Upgrades", function () {
       let amount = ethers.BigNumber.from(1_000);
       expect(signerBalanceBefore).to.equal(0);
 
-      await arrowTokenV2.issueNewTokens(signer1.address, amount);
+      await arrowTokenV2.mint(signer1.address, amount);
 
       let signerBalanceAfter = new ethers.BigNumber.from(
         await arrowTokenV2.balanceOf(signer1.address)
