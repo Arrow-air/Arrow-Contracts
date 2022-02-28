@@ -4,12 +4,17 @@ name: Hardhat Tests
 
 on:
   push:
+    paths-ignore:
+      -'.github/workflows/**'
     branches: [ main ]
   pull_request:
+    paths-ignore:
+      -'.github/workflows/**'
     branches: [ main ]
   schedule:
     # run this workflow every Monday at 1PM UTC
     - cron: "* 13 * * 1"
+
 
 jobs:
   tests:
