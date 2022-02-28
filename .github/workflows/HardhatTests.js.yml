@@ -5,11 +5,11 @@ name: Hardhat Tests
 on:
   push:
     paths-ignore:
-      -'.github/workflows/**'
+      -'**/HardhatTests.js.yml'
     branches: [ main ]
   pull_request:
     paths-ignore:
-      -'.github/workflows/**'
+      -'**/HardhatTests.js.yml'
     branches: [ main ]
   schedule:
     # run this workflow every Monday at 1PM UTC
