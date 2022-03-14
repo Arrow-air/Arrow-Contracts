@@ -1,0 +1,45 @@
+{
+  "name": "arrow-contracts",
+  "version": "0.1.0",
+  "description": "Smart contracts defining the ArrowAir token and governance",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "brownie test",
+    "verifyOptimismKovan": "npx hardhat verify --network optimismKovan",
+    "deployOptimismKovan": "npx hardhat deploy --network optimismKovan"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arrow-air/Arrow-Contracts.git"
+  },
+  "keywords": [
+    "vtol",
+    "web3",
+    "ethereum",
+    "Arrow"
+  ],
+  "author": "ArrowAir",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Arrow-air/Arrow-Contracts/issues"
+  },
+  "homepage": "https://github.com/Arrow-air/Arrow-Contracts#readme",
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.5",
+    "@nomiclabs/hardhat-etherscan": "^3.0.1",
+    "@nomiclabs/hardhat-waffle": "^2.0.2",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@openzeppelin/contracts": "^4.5.0",
+    "@openzeppelin/contracts-upgradeable": "^4.5.1",
+    "dotenv": "^16.0.0",
+    "ethers": "^5.5.4",
+    "web3": "^1.7.0"
+  },
+  "devDependencies": {
+    "hardhat": "^2.8.4",
+    "hardhat-deploy": "^0.10.5"
+  }
+}

@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.11;
 
 // SPDX-License-Identifier: MIT
 
@@ -9,8 +9,10 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
     @title Arrow Token implementation
  */
 contract ArrowToken is ERC20, Ownable {
-    constructor(uint256 initialSupply)
-        ERC20("Arrow", "ARROW")
+
+    /// @notice This function assigns msg.sender as the token admin and mints them initial supply
+    constructor(uint256 initialSupply, string memory _name, string memory _symbol)
+        ERC20(_name, _symbol)
     {
         _mint(msg.sender, initialSupply);
     }

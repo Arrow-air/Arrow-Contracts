@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.11;
 
 // SPDX-License-Identifier: MIT
 
@@ -10,9 +10,16 @@ import "./ArrowVestingBase.sol";
  */
 contract ArrowVestingFactory {
 
-    address immutable vestingImplementation;
+    address public vestingImplementation;
 
-    constructor() public {
+    event NewVestingAgreement(
+        address beneficiaryAddress,
+        uint64 startTimestamp,
+        uint64 durationSeconds,
+        address vestingWalletAddress
+    );
+
+    constructor() {
         vestingImplementation = address(new ArrowVestingBase());
     }
 
@@ -25,9 +32,9 @@ contract ArrowVestingFactory {
         address beneficiaryAddress,
         uint64 startTimestamp,
         uint64 durationSeconds
-    ) external returns (address) {
-        address clone = Clones.clone(vestingImplementation);
+    ) external returns (address clone) {
+        clone = Clones.clone(vestingImplementation);
         ArrowVestingBase(payable(clone)).initialize(beneficiaryAddress, startTimestamp, durationSeconds);
-        return clone;
+        emit newVestingAgreement(beneficiaryAddress, startTimestamp, durationSeconds, payable(clone));
     }
 }
