@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.11;
 
-// Valid import paths for hardhat (need to comment out when using brownie)
 import "@openzeppelin/contracts-upgradeable/finance/VestingWalletUpgradeable.sol";
 
 /** 

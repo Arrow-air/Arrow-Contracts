@@ -12,9 +12,11 @@ describe("Contract Upgrades", function () {
   beforeEach(async function () {
     Token = await ethers.getContractFactory("ArrowToken");
     [owner, signer1] = await ethers.getSigners();
-    arrowToken = await upgrades.deployProxy(Token, [
-      ethers.BigNumber.from(1_000_000),
-    ]);
+    arrowToken = await upgrades.deployProxy(
+      Token,
+      [ethers.BigNumber.from(1_000_000)],
+      { kind: "uups" }
+    );
     await arrowToken.deployed();
     TokenV2 = await ethers.getContractFactory("ArrowTokenV2");
     arrowTokenV2 = await upgrades.upgradeProxy(arrowToken, TokenV2, {

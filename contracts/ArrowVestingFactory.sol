@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.11;
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./ArrowVestingBase.sol";
@@ -8,7 +8,14 @@ import "./ArrowVestingBase.sol";
     Factory contract for creating vesting wallets from their base implementations.
  */
 contract ArrowVestingFactory {
-    address immutable vestingImplementation;
+    address public vestingImplementation;
+
+    event NewVestingAgreement(
+        address beneficiaryAddress,
+        uint64 startTimestamp,
+        uint64 durationSeconds,
+        address vestingWalletAddress
+    );
 
     constructor() {
         vestingImplementation = address(new ArrowVestingBase());
@@ -23,13 +30,18 @@ contract ArrowVestingFactory {
         address beneficiaryAddress,
         uint64 startTimestamp,
         uint64 durationSeconds
-    ) external returns (address) {
-        address clone = Clones.clone(vestingImplementation);
+    ) external returns (address clone) {
+        clone = Clones.clone(vestingImplementation);
         ArrowVestingBase(payable(clone)).initialize(
             beneficiaryAddress,
             startTimestamp,
             durationSeconds
         );
-        return clone;
+        emit NewVestingAgreement(
+            beneficiaryAddress,
+            startTimestamp,
+            durationSeconds,
+            payable(clone)
+        );
     }
 }
