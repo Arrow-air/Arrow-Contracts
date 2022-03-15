@@ -3,7 +3,11 @@ __pycache__
 .hypothesis/
 build/
 reports/
-node_modules/
-artifacts/
-cache/
+node_modules
+build
+cache
+artifacts
+.pytest_cache
+.openzeppelin
 .env
+.DS_Store
