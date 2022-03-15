@@ -9,3 +9,5 @@ cache
 artifacts
 .pytest_cache
 .openzeppelin
+.env
+.DS_Store
