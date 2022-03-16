@@ -4,13 +4,21 @@ name: Hardhat Tests
 
 on:
   push:
+    paths-ignore:
+      -'**/HardhatTests.js.yml'
+    branches: [ main ]
   pull_request:
+    paths-ignore:
+      -'**/HardhatTests.js.yml'
+    branches: [ main ]
   schedule:
     # run this workflow every Monday at 1PM UTC
     - cron: "* 13 * * 1"
 
+
 jobs:
   tests:
+
     runs-on: ubuntu-latest
 
     strategy:
@@ -19,13 +27,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "npm"
-      - name: Install dependencies
-        run: npm ci
-      - name: Run hardhat tests
-        run: npm run test
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm ci
+    - name: Run hardhat tests
+      run: npx hardhat test

@@ -1,19 +1,22 @@
 const { LedgerSigner } = require("@ethersproject/hardware-wallets");
-const { ethers, upgrades, web3, getNamedAccounts } = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 
 // Optional ability to pull environment variables securely
 // require("dotenv").config();
 
-const contractName = "ArrowToken";
 // This script deploys an arbitrary ERC-20 and then spins up a bathToken (permissioned admin entry) for it
-async function main() {
+const func = async (hre) => {
   // Note using both web3 and ethers here as an example. Could choose just one for simplicity, I recommend ethers
+  const { getNamedAccounts, web3 } = hre;
   const { deployer } = await getNamedAccounts();
 
   // ** Key Inputs to ERC-20 **
   const name = "Arrow Air";
   const symbol = "ARROW";
   const intialSupply = 100_000_000; // Initial token supply minted to admin/deployer
+  // const decimals = 18;
+  const admin = deployer;
+  // ***
 
   // *** Nonce Manager ***
   const baseNonce = web3.eth.getTransactionCount(
@@ -36,9 +39,8 @@ async function main() {
     "as admin."
   );
 
-  // deploy upgradeable contracts under OpenZepplin's instruction:
-  // https://docs.openzeppelin.com/upgrades-plugins/1.x/hardhat-upgrades
-  const Token = await ethers.getContractFactory(contractName);
+  // deploy upgradeable contracts under OpenZepplin's instruction: https://docs.openzeppelin.com/upgrades-plugins/1.x/hardhat-upgrades
+  const Token = await ethers.getContractFactory("ArrowToken");
   await upgrades
     .deployProxy(Token, [web3.utils.toWei(intialSupply.toString())], {
       kind: "uups",
@@ -56,11 +58,7 @@ async function main() {
         web3.utils.toWei(intialSupply.toString())
       );
     });
-}
+};
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+func.tags = ["ArrowERC20"];
+module.exports = func;

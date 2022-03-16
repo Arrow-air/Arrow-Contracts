@@ -1,7 +1,7 @@
 {
   "name": "arrow-contracts",
   "version": "0.1.0",
-  "description": "Smart contracts defining Arrow Air's token and governance",
+  "description": "Smart contracts defining the ArrowAir token and governance",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npx hardhat test",
     "verifyOptimismKovan": "npx hardhat verify --network optimismKovan",
-    "deployOptimismKovan": "npx hardhat run --network optimismKovan scripts/deployToken.js"
+    "deployOptimismKovan": "npx hardhat deploy --network optimismKovan"
   },
   "repository": {
     "type": "git",
@@ -39,10 +39,10 @@
     "web3": "^1.7.0"
   },
   "devDependencies": {
+    "hardhat": "^2.8.4",
+    "hardhat-deploy": "^0.10.5",
     "@openzeppelin/hardhat-upgrades": "^1.14.0",
     "chai": "^4.3.6",
-    "ethereum-waffle": "^3.4.0",
-    "hardhat": "^2.8.4",
-    "hardhat-deploy": "^0.10.5"
+    "ethereum-waffle": "^3.4.0"
   }
 }
