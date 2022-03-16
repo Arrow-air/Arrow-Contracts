@@ -3,14 +3,14 @@ require("hardhat-deploy");
 require("@nomiclabs/hardhat-web3");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-waffle");
-require("@openzeppelin/hardhat-upgrades");
+
+// Helpful plugins:
+// require("@nomiclabs/hardhat-waffle");
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  paths: {},
   solidity: {
     version: "0.8.11",
     // overrides: {
@@ -27,7 +27,7 @@ module.exports = {
     optimismKovan: {
       url: "https://kovan.optimism.io/",
       // ovm: true, // NOTE: example of how you could use a custom compiler
-      gasPrice: 1000000,
+      gasPrice: 10000,
       chainId: 69,
       // Account specifics for testing
       accounts: [
@@ -49,4 +49,5 @@ module.exports = {
       default: 0,
     },
   },
+  paths: {},
 };

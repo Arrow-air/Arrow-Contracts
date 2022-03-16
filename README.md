@@ -2,31 +2,25 @@
 
 Implementation of the Arrow token and governance smart contracts.
 
-## Get Started
+## Installation
 
-```bash
-npm install
-```
+1. [Install Brownie](https://eth-brownie.readthedocs.io/en/stable/install.html), if you haven't already.
 
 ## Testing
 
+To run the tests:
+
 ```bash
-npm run test
+brownie test
 ```
 
 ## Deployments
 
-To deploy on Optimism Kovan testnet:
+### Rinkeby
 
-```bash
-npm run deployOptimismKovan
-```
-
-### Testnet Addresses
-
-| Contract                               | Address                                    |
-| -------------------------------------- | ------------------------------------------ |
-| Optimism Kovan (deployed by GoodluckH) | 0x9ea5F910e4579d9dfCc6ed2fb11C591F6ed6c5a8 |
+| Contract | Address |
+| -- | -- |
+| Gnosis Safe | 0x6943eBEfCD7d85B536aEb35BBFd95C5699158Abe |
 
 ## License
 
