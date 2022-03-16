@@ -1,5 +1,5 @@
 const { assert } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 
 describe("ArrowToken Approve", function () {
   let Token;
@@ -12,10 +12,10 @@ describe("ArrowToken Approve", function () {
     [owner, signer1] = await ethers.getSigners();
     let name = "Arrow Token";
     let symbol = "ARROW";
-    arrowToken = await Token.deploy(
-      ethers.BigNumber.from(1_000_000),
-      name,
-      symbol
+    arrowToken = await upgrades.deployProxy(
+      Token,
+      [ethers.BigNumber.from(1_000_000), name, symbol],
+      { kind: "uups" }
     );
   });
 
@@ -88,6 +88,5 @@ describe("ArrowToken Approve", function () {
       0
     );
   });
-
 
 });

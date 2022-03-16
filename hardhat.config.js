@@ -3,6 +3,7 @@ require("hardhat-deploy");
 require("@nomiclabs/hardhat-web3");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
+require("@openzeppelin/hardhat-upgrades");
 
 // Helpful plugins:
 // require("@nomiclabs/hardhat-waffle");
@@ -30,7 +31,6 @@ module.exports = {
       gasPrice: 10000,
       chainId: 69,
       // Account specifics for testing
-
       timeout: 40000,
     },
   },

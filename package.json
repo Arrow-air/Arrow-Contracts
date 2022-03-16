@@ -39,6 +39,7 @@
     "web3": "^1.7.0"
   },
   "devDependencies": {
+    "@openzeppelin/hardhat-upgrades": "^1.16.1",
     "chai": "^4.3.6",
     "ethereum-waffle": "^4.0.0-alpha.0",
     "hardhat": "^2.8.4",
