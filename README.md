@@ -18,6 +18,19 @@ npm run test
 
 ## Deployments
 
+To deploy on the Optimism Kovan testnet:
+
+```bash
+npm run deployOptimismKovan
+```
+
+To deploy on `localhost`:
+
+```bash
+npx hardhat node
+npx hardhat run --network localhost deploy/deployArrowTokenHot.js
+```
+
 ### Rinkeby
 
 | Contract    | Address                                    |

@@ -1,27 +1,22 @@
-const { BigNumber } = require("ethers");
-const { LedgerSigner } = require("@ethersproject/hardware-wallets");
+const { ethers, upgrades, web3 } = require("hardhat");
 
 // Optional ability to pull environment variables securely
 // require("dotenv").config();
 
+const contractName = "ArrowToken";
 // This script deploys an arbitrary ERC-20 and then spins up a bathToken (permissioned admin entry) for it
-const func = async (hre) => {
+async function main() {
   // Note using both web3 and ethers here as an example. Could choose just one for simplicity, I recommend ethers
-  const { deployments, getNamedAccounts, web3, ethers } = hre;
-  const { deploy } = deployments;
-  const { deployer } = await getNamedAccounts();
+  const deployer = await ethers.getSigner();
 
   // ** Key Inputs to ERC-20 **
   const name = "Arrow Air";
   const symbol = "ARROW";
-  const intialSupply = 1000; // Initial token supply minted to admin/deployer
-  // const decimals = 18;
-  const admin = deployer;
-  // ***
+  const intialSupply = 100_000_000; // Initial token supply minted to admin/deployer
 
   // *** Nonce Manager ***
   const baseNonce = web3.eth.getTransactionCount(
-    deployer //deployer
+    deployer.address //deployer
   ); //HD deployer
   let nonceOffset = 0;
   function getNonce() {
@@ -36,22 +31,35 @@ const func = async (hre) => {
     "ERC20 to ChainId",
     chain,
     "with",
-    deployer,
+    deployer.address,
     "as admin."
   );
 
-  const erc20Factory = await hre.ethers.getContractFactory("ArrowToken");
-  let deployedERC20;
-  await erc20Factory
-    .deploy(web3.utils.toWei(intialSupply.toString()), name, symbol, {
+  // deploy upgradeable contracts under OpenZepplin's instruction:
+  // https://docs.openzeppelin.com/upgrades-plugins/1.x/hardhat-upgrades
+  const Token = await ethers.getContractFactory(contractName);
+  await upgrades
+    .deployProxy(Token, [web3.utils.toWei(intialSupply.toString()), name, symbol], {
+      kind: "uups",
       nonce: await getNonce(),
     })
     .then(async (r) => {
-      console.log("\nDeployed " + name + " (" + symbol + ") here: * ", r.address, " * to ChainID", chain);
-      console.log("Initial Supply in wei:", web3.utils.toWei(intialSupply.toString()));
-      deployedERC20 = r.address;
+      console.log(
+        "\nDeployed " + name + " (" + symbol + ") proxy contract here: * ",
+        r.address,
+        " * on ChainID",
+        chain
+      );
+      console.log(
+        "Initial Supply in wei:",
+        web3.utils.toWei(intialSupply.toString())
+      );
     });
-};
+}
 
-func.tags = ["ArrowERC20"];
-module.exports = func;
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

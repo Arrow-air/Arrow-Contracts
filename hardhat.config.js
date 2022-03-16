@@ -1,17 +1,44 @@
 require("dotenv").config();
-require("hardhat-deploy");
 require("@nomiclabs/hardhat-web3");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-waffle");
 require("@openzeppelin/hardhat-upgrades");
 
-// Helpful plugins:
-// require("@nomiclabs/hardhat-waffle");
+const adminKey = process.env.ADMIN_KEY || "";
+const etherscanOptimismAPI = process.env.ETHERSCAN_API_OPTIMISM || "";
 
+function createNetworkConfig() {
+  if (adminKey) {
+    return {
+      optimismKovan: {
+        url: "https://kovan.optimism.io/",
+        // ovm: true, // NOTE: example of how you could use a custom compiler
+        gasPrice: 10000,
+        chainId: 69,
+        // Account specifics for testing
+        accounts: [
+          process.env.ADMIN_KEY,
+        ],
+        timeout: 40000,
+      },
+    };
+  } else {
+    return {};
+  }
+}
+
+const networkConfig = createNetworkConfig();
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./artifacts",
+  },
   solidity: {
     version: "0.8.11",
     // overrides: {
@@ -25,26 +52,14 @@ module.exports = {
   },
 
   networks: {
-    optimismKovan: {
-      url: "https://kovan.optimism.io/",
-      // ovm: true, // NOTE: example of how you could use a custom compiler
-      gasPrice: 10000,
-      chainId: 69,
-      // Account specifics for testing
-      timeout: 40000,
-    },
+    hardhat: {},
+    ...networkConfig,
   },
   // Easy contract verification
   etherscan: {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
     // apiKey: process.env.ETHERSCAN_API,
-    apiKey: process.env.ETHERSCAN_API_OPTIMISM,
+    apiKey: etherscanOptimismAPI,
   },
-  namedAccounts: {
-    deployer: {
-      default: 0,
-    },
-  },
-  paths: {},
 };
