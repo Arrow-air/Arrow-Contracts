@@ -30,10 +30,7 @@ module.exports = {
       gasPrice: 10000,
       chainId: 69,
       // Account specifics for testing
-      accounts: [
-        process.env.ADMIN_KEY,
-        // process.env.PROXY_ADMIN_KEY,
-      ],
+
       timeout: 40000,
     },
   },
