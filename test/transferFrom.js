@@ -13,10 +13,10 @@ describe("ArrowToken TransferFrom", function () {
     [owner, signer1, signer2] = await ethers.getSigners();
     let name = "Arrow Token";
     let symbol = "ARROW";
-    arrowToken = await Token.deploy(
-      ethers.BigNumber.from(1_000_000),
-      name,
-      symbol
+    arrowToken = await upgrades.deployProxy(
+      Token,
+      [ethers.BigNumber.from(1_000_000), name, symbol],
+      { kind: "uups" }
     );
     await arrowToken.deployed();
   });

@@ -9,7 +9,6 @@ import "./ArrowVestingBase.sol";
     Factory contract for creating vesting wallets from their base implementations.
  */
 contract ArrowVestingFactory {
-
     address public vestingImplementation;
 
     event NewVestingAgreement(

@@ -1,5 +1,5 @@
 const { expect, assert } = require("chai");
-const { ethers } = require("hardhat");
+const { ethers,upgrades } = require("hardhat");
 
 describe("Contract Deployments", function () {
   let owner;
@@ -18,10 +18,10 @@ describe("Contract Deployments", function () {
       Token = await ethers.getContractFactory("ArrowToken");
       let name = "Arrow Token";
       let symbol = "ARROW";
-      arrowToken = await Token.deploy(
-        ethers.BigNumber.from(1_000_000),
-        name,
-        symbol
+      arrowToken = await upgrades.deployProxy(
+        Token,
+        [ethers.BigNumber.from(1_000_000), name, symbol],
+        { kind: "uups" }
       );
       await arrowToken.deployed();
     });
@@ -34,6 +34,12 @@ describe("Contract Deployments", function () {
         parseInt(ethers.utils.formatUnits(await arrowToken.totalSupply(), 0)),
         amount,
         `initial supply of ${amount} tokens`
+      );
+    });
+
+    it("Implementation contract address should be different from the proxy address", async function () {
+      expect(arrowToken.address).not.equal(
+        await upgrades.erc1967.getImplementationAddress(arrowToken.address)
       );
     });
   });

@@ -19,10 +19,10 @@ describe("Vesting Contracts", function () {
       let Token = await ethers.getContractFactory("ArrowToken");
       let name = "Arrow Token";
       let symbol = "ARROW";
-      arrowToken = await Token.deploy(
-        ethers.BigNumber.from(1_000_000),
-        name,
-        symbol
+      arrowToken = await upgrades.deployProxy(
+        Token,
+        [ethers.BigNumber.from(1_000_000), name, symbol],
+        { kind: "uups" }
       );
       await arrowToken.deployed();
       let VestingBase = await ethers.getContractFactory("ArrowVestingBase");
@@ -165,10 +165,10 @@ describe("Vesting Contracts", function () {
       let Token = await ethers.getContractFactory("ArrowToken");
       let name = "Arrow Token";
       let symbol = "ARROW";
-      arrowToken = await Token.deploy(
-        ethers.BigNumber.from(100_000_000),
-        name,
-        symbol
+      arrowToken = await upgrades.deployProxy(
+        Token,
+        [ethers.BigNumber.from(100_000_000), name, symbol],
+        { kind: "uups" }
       );
       await arrowToken.deployed();
       let VestingBase = await ethers.getContractFactory("ArrowVestingBase");
