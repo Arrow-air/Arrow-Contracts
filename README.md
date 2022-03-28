@@ -53,12 +53,38 @@ npx hardhat test
 8. Run the deployment script to deploy the latest contracts to the testnet.
 
 ```
-npx hardhat deploy --network rinkeby
+npx hardhat deploy --network rinkeby --tags Deployment
 ```
 
 ## Upgrading
 
 Upgrading contracts that are owned by a multisig should be proposed using [Defender](https://docs.openzeppelin.com/defender/guide-upgrades)
+
+1. Sign up for a Defender account and generate an API key.
+
+2. Export the API key and secret key into your local environment.
+
+```
+export DEFENDER_TEAM_API_KEY=<API_KEY>
+export DEFENDER_TEAM_API_SECRET_KEY=<SECRET_KEY>
+```
+
+3. Export the addresses of the token proxy contract to be upgraded and the owning Gnosis multisig address.
+
+```
+export ARROW_TOKEN_PROXY_CONTRACT=<TOKEN_ADDRESS>
+export ARROW_TOKEN_MUTISIG=<MULTISIG_ADDRESS>
+```
+
+4. Run the upgrade script to generate an upgrade proposal in Defender.
+
+```
+npx hardhat deploy --network rinkeby --tags Upgrade 
+```
+
+5. Use the multisig to approve and execute the upgrade proposal.
+
+6. Verify the newly deployed implementation on Etherscan.
 
 ## Deployments
 
