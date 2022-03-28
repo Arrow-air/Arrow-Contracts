@@ -6,9 +6,10 @@ import "@openzeppelin/contracts/proxy/Clones.sol";
 import "./ArrowVestingBase.sol";
 
 /**
-    Factory contract for creating vesting wallets from their base implementations.
+    @title Factory contract for creating vesting wallets from their base implementations
  */
 contract ArrowVestingFactory {
+    
     address public vestingImplementation;
 
     event NewVestingAgreement(
@@ -23,9 +24,11 @@ contract ArrowVestingFactory {
     }
 
     /**
-        Creates a new cloned vesting wallet from its base implementation.
-
-        The wallet will initially be empty and should have appropriate ERC20 tokens and ETH transferred to it after creation.
+        @notice Creates a new cloned vesting wallet from its base implementation. The wallet will initially be empty and should have appropriate ERC20 tokens and ETH transferred to it after creation
+        @param beneficiaryAddress The address of which the vesting is entitled to
+        @param startTimestamp The start time of the vesting schedule
+        @param durationSeconds Denotes the length of the vesting period
+        @return clone The address of the vesting wallet implemented by `ArrowVestingBase`
      */
     function createVestingSchedule(
         address beneficiaryAddress,

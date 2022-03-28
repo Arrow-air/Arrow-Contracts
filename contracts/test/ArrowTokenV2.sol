@@ -20,7 +20,10 @@ contract ArrowTokenV2 is
     // new variable for testing purpose
     uint256 public myVal;
 
-    // implement the UUPS interface
+    /**
+        @notice Ensures only the owner can upgrade this contract
+        @dev Must be included for the UUPS proxy: https://docs.openzeppelin.com/contracts/4.x/api/proxy#UUPSUpgradeable
+    */
     function _authorizeUpgrade(address) internal override onlyOwner {}
 
     /** 
