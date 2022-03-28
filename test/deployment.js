@@ -1,5 +1,5 @@
 const { expect, assert } = require("chai");
-const { ethers,upgrades } = require("hardhat");
+const { ethers, upgrades } = require("hardhat");
 
 describe("Contract Deployments", function () {
   let owner;
@@ -21,7 +21,9 @@ describe("Contract Deployments", function () {
       arrowToken = await upgrades.deployProxy(
         Token,
         [ethers.BigNumber.from(1_000_000), name, symbol],
-        { kind: "uups" }
+        {
+          kind: "uups",
+        },
       );
       await arrowToken.deployed();
     });
@@ -33,13 +35,13 @@ describe("Contract Deployments", function () {
       assert.strictEqual(
         parseInt(ethers.utils.formatUnits(await arrowToken.totalSupply(), 0)),
         amount,
-        `initial supply of ${amount} tokens`
+        `initial supply of ${amount} tokens`,
       );
     });
 
     it("Implementation contract address should be different from the proxy address", async function () {
       expect(arrowToken.address).not.equal(
-        await upgrades.erc1967.getImplementationAddress(arrowToken.address)
+        await upgrades.erc1967.getImplementationAddress(arrowToken.address),
       );
     });
   });
@@ -53,7 +55,7 @@ describe("Contract Deployments", function () {
         .then(() => {
           expect(true).to.be.true;
         })
-        .catch((e) => {
+        .catch(e => {
           expect(false, e).to.be.true;
         });
     });
@@ -62,7 +64,7 @@ describe("Contract Deployments", function () {
   describe("ArrowVestingFactory Deployment", function () {
     it("Should deploy successfully", async function () {
       let VestingFactory = await ethers.getContractFactory(
-        "ArrowVestingFactory"
+        "ArrowVestingFactory",
       );
       let vestingFactory = await VestingFactory.deploy();
       vestingFactory
@@ -70,7 +72,7 @@ describe("Contract Deployments", function () {
         .then(() => {
           expect(true).to.be.true;
         })
-        .catch((e) => {
+        .catch(e => {
           expect(false, e).to.be.true;
         });
     });

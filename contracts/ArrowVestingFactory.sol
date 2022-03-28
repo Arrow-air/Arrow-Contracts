@@ -33,7 +33,16 @@ contract ArrowVestingFactory {
         uint64 durationSeconds
     ) external returns (address clone) {
         clone = Clones.clone(vestingImplementation);
-        ArrowVestingBase(payable(clone)).initialize(beneficiaryAddress, startTimestamp, durationSeconds);
-        emit NewVestingAgreement(beneficiaryAddress, startTimestamp, durationSeconds, payable(clone));
+        ArrowVestingBase(payable(clone)).initialize(
+            beneficiaryAddress,
+            startTimestamp,
+            durationSeconds
+        );
+        emit NewVestingAgreement(
+            beneficiaryAddress,
+            startTimestamp,
+            durationSeconds,
+            payable(clone)
+        );
     }
 }

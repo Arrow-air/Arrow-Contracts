@@ -16,7 +16,7 @@ describe("ArrowToken TransferFrom", function () {
     arrowToken = await upgrades.deployProxy(
       Token,
       [ethers.BigNumber.from(1_000_000), name, symbol],
-      { kind: "uups" }
+      { kind: "uups" },
     );
     await arrowToken.deployed();
   });
@@ -30,7 +30,7 @@ describe("ArrowToken TransferFrom", function () {
       .connect(signer1)
       .transferFrom(owner.address, signer2.address, amount);
     expect(await arrowToken.balanceOf(owner.address)).to.equal(
-      senderBalance - amount
+      senderBalance - amount,
     );
   });
 
@@ -43,7 +43,7 @@ describe("ArrowToken TransferFrom", function () {
       .connect(signer1)
       .transferFrom(owner.address, signer2.address, amount);
     expect(await arrowToken.balanceOf(signer2.address)).to.equal(
-      receiverBalance + amount
+      receiverBalance + amount,
     );
   });
 
@@ -68,7 +68,7 @@ describe("ArrowToken TransferFrom", function () {
       .transferFrom(owner.address, signer2.address, transferAmount);
 
     expect(await arrowToken.allowance(owner.address, signer1.address)).to.equal(
-      approvalAmount - transferAmount
+      approvalAmount - transferAmount,
     );
   });
 
@@ -83,7 +83,7 @@ describe("ArrowToken TransferFrom", function () {
       .transferFrom(owner.address, signer2.address, transferAmount);
 
     expect(await arrowToken.allowance(owner.address, signer2.address)).to.equal(
-      approvalAmount
+      approvalAmount,
     );
   });
 
@@ -109,7 +109,7 @@ describe("ArrowToken TransferFrom", function () {
       .transferFrom(owner.address, signer2.address, amount);
 
     expect(await arrowToken.balanceOf(signer2.address)).to.equal(
-      receiverBalance + amount
+      receiverBalance + amount,
     );
     expect(await arrowToken.balanceOf(owner.address)).to.equal(0);
   });
@@ -125,7 +125,7 @@ describe("ArrowToken TransferFrom", function () {
 
     expect(await arrowToken.balanceOf(owner.address)).to.equal(senderBalance);
     expect(await arrowToken.balanceOf(signer2.address)).to.equal(
-      receiverBalance
+      receiverBalance,
     );
   });
 
@@ -139,7 +139,7 @@ describe("ArrowToken TransferFrom", function () {
 
     expect(await arrowToken.balanceOf(owner.address)).to.equal(senderBalance);
     expect(await arrowToken.balanceOf(signer2.address)).to.equal(
-      receiverBalance
+      receiverBalance,
     );
   });
 
@@ -151,7 +151,7 @@ describe("ArrowToken TransferFrom", function () {
     await expect(
       arrowToken
         .connect(signer1)
-        .transferFrom(owner.address, signer2.address, amount + 1)
+        .transferFrom(owner.address, signer2.address, amount + 1),
     ).to.be.reverted;
   });
 
@@ -161,7 +161,7 @@ describe("ArrowToken TransferFrom", function () {
     await expect(
       arrowToken
         .connect(signer1)
-        .transferFrom(owner.address, signer2.address, amount)
+        .transferFrom(owner.address, signer2.address, amount),
     ).to.be.reverted;
   });
 
@@ -174,7 +174,7 @@ describe("ArrowToken TransferFrom", function () {
     await expect(
       arrowToken
         .connect(signer1)
-        .transferFrom(owner.address, signer2.address, amount)
+        .transferFrom(owner.address, signer2.address, amount),
     ).to.be.reverted;
   });
 
@@ -187,7 +187,7 @@ describe("ArrowToken TransferFrom", function () {
 
     expect(await arrowToken.balanceOf(owner.address)).to.equal(senderBalance);
     expect(await arrowToken.allowance(owner.address, owner.address)).to.equal(
-      senderBalance - amount
+      senderBalance - amount,
     );
   });
 
@@ -207,7 +207,7 @@ describe("ArrowToken TransferFrom", function () {
     expect(
       await arrowToken
         .connect(signer1)
-        .transferFrom(owner.address, signer2.address, amount)
+        .transferFrom(owner.address, signer2.address, amount),
     )
       .to.emit(arrowToken, "Transfer")
       .withArgs(owner.address, signer2.address, amount);

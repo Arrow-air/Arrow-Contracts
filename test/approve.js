@@ -15,14 +15,19 @@ describe("ArrowToken Approve", function () {
     arrowToken = await upgrades.deployProxy(
       Token,
       [ethers.BigNumber.from(1_000_000), name, symbol],
-      { kind: "uups" }
+      { kind: "uups" },
     );
   });
 
   it("Should have an initial allowance of zero", async function () {
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, signer1.address), 0)),
-      0
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, signer1.address),
+          0,
+        ),
+      ),
+      0,
     );
   });
 
@@ -31,8 +36,13 @@ describe("ArrowToken Approve", function () {
       .connect(owner)
       .approve(signer1.address, ethers.BigNumber.from(1_000));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, signer1.address), 0)),
-      1_000
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, signer1.address),
+          0,
+        ),
+      ),
+      1_000,
     );
   });
 
@@ -44,15 +54,25 @@ describe("ArrowToken Approve", function () {
       .connect(owner)
       .approve(signer1.address, ethers.BigNumber.from(100));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, signer1.address), 0)),
-      100
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, signer1.address),
+          0,
+        ),
+      ),
+      100,
     );
     await arrowToken
       .connect(owner)
       .approve(signer1.address, ethers.BigNumber.from(10));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, signer1.address), 0)),
-      10
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, signer1.address),
+          0,
+        ),
+      ),
+      10,
     );
   });
 
@@ -64,8 +84,13 @@ describe("ArrowToken Approve", function () {
       .connect(owner)
       .approve(signer1.address, ethers.BigNumber.from(0));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, signer1.address), 0)),
-      0
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, signer1.address),
+          0,
+        ),
+      ),
+      0,
     );
   });
 
@@ -74,8 +99,13 @@ describe("ArrowToken Approve", function () {
       .connect(owner)
       .approve(owner.address, ethers.BigNumber.from(1_000));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(owner.address, owner.address), 0)),
-      1_000
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(owner.address, owner.address),
+          0,
+        ),
+      ),
+      1_000,
     );
   });
 
@@ -84,9 +114,13 @@ describe("ArrowToken Approve", function () {
       .connect(owner)
       .approve(signer1.address, ethers.BigNumber.from(1_000));
     assert.strictEqual(
-      parseInt(ethers.utils.formatUnits(await arrowToken.allowance(signer1.address, owner.address), 0)),
-      0
+      parseInt(
+        ethers.utils.formatUnits(
+          await arrowToken.allowance(signer1.address, owner.address),
+          0,
+        ),
+      ),
+      0,
     );
   });
-
 });

@@ -14,7 +14,7 @@ describe("Vesting Contracts", function () {
 
     it("Should correctly vest", async function () {
       let VestingFactory = await ethers.getContractFactory(
-        "ArrowVestingFactory"
+        "ArrowVestingFactory",
       );
       let Token = await ethers.getContractFactory("ArrowToken");
       let name = "Arrow Token";
@@ -22,7 +22,9 @@ describe("Vesting Contracts", function () {
       arrowToken = await upgrades.deployProxy(
         Token,
         [ethers.BigNumber.from(1_000_000), name, symbol],
-        { kind: "uups" }
+        {
+          kind: "uups",
+        },
       );
       await arrowToken.deployed();
       let VestingBase = await ethers.getContractFactory("ArrowVestingBase");
@@ -41,13 +43,13 @@ describe("Vesting Contracts", function () {
         await vestingFactory.callStatic.createVestingSchedule(
           beneficiary1.address,
           startTimestamp,
-          durationSeconds
+          durationSeconds,
         );
       // actually create the transaction so that the child contract can be deployed on chain
       let txn = await vestingFactory.createVestingSchedule(
         beneficiary1.address,
         startTimestamp,
-        durationSeconds
+        durationSeconds,
       );
       await txn.wait();
       vestingContract = await VestingBase.attach(vestingWalletAddress);
@@ -57,7 +59,7 @@ describe("Vesting Contracts", function () {
       // Add tokens to the contract
       await arrowToken.transfer(vestingContract.address, amount);
       expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(
-        amount
+        amount,
       );
       console.log("√ Pass - Add tokens to the contract");
 
@@ -67,7 +69,7 @@ describe("Vesting Contracts", function () {
       expect(
         await vestingContract
           .connect(beneficiary1)
-          ["released(address)"](arrowToken.address)
+          ["released(address)"](arrowToken.address),
       ).to.equal(0);
       console.log("√ Pass - Check contract variables have been set correctly");
 
@@ -92,10 +94,10 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        (amount * (timestampAfter - startTimestamp)) / durationSeconds
+        (amount * (timestampAfter - startTimestamp)) / durationSeconds,
       );
       console.log(
-        "√ Pass - No tokens should have been released before the end of the vesting cliff"
+        "√ Pass - No tokens should have been released before the end of the vesting cliff",
       );
 
       // Half the tokens should be vested when half the vesting duration has elapsed
@@ -113,10 +115,10 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        (amount * (timestampAfter - startTimestamp)) / durationSeconds
+        (amount * (timestampAfter - startTimestamp)) / durationSeconds,
       );
       console.log(
-        "√ Pass - Half the tokens should be vested when half the vesting duration has elapsed"
+        "√ Pass - Half the tokens should be vested when half the vesting duration has elapsed",
       );
 
       // All tokens should be vested when the vesting duration has elapsed
@@ -133,10 +135,10 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        amount
+        amount,
       );
       console.log(
-        "√ Pass - All tokens should be vested when the vesting duration has elapsed"
+        "√ Pass - All tokens should be vested when the vesting duration has elapsed",
       );
     });
   });
@@ -160,7 +162,7 @@ describe("Vesting Contracts", function () {
     it("Should correctly vest", async function () {
       await ethers.provider.send("evm_setAutomine", [true]);
       let VestingFactory = await ethers.getContractFactory(
-        "ArrowVestingFactory"
+        "ArrowVestingFactory",
       );
       let Token = await ethers.getContractFactory("ArrowToken");
       let name = "Arrow Token";
@@ -168,7 +170,9 @@ describe("Vesting Contracts", function () {
       arrowToken = await upgrades.deployProxy(
         Token,
         [ethers.BigNumber.from(100_000_000), name, symbol],
-        { kind: "uups" }
+        {
+          kind: "uups",
+        },
       );
       await arrowToken.deployed();
       let VestingBase = await ethers.getContractFactory("ArrowVestingBase");
@@ -188,13 +192,13 @@ describe("Vesting Contracts", function () {
         await vestingFactory.callStatic.createVestingSchedule(
           beneficiary1.address,
           ethers.BigNumber.from(startTimestamp),
-          ethers.BigNumber.from(durationSeconds)
+          ethers.BigNumber.from(durationSeconds),
         );
       // actually create the transaction so that the child contract can be deployed on chain
       var txn = await vestingFactory.createVestingSchedule(
         beneficiary1.address,
         ethers.BigNumber.from(startTimestamp),
-        ethers.BigNumber.from(durationSeconds)
+        ethers.BigNumber.from(durationSeconds),
       );
       await txn.wait();
       vestingContract = await VestingBase.attach(vestingWalletAddress);
@@ -204,13 +208,13 @@ describe("Vesting Contracts", function () {
         await vestingFactory.callStatic.createVestingSchedule(
           beneficiary2.address,
           ethers.BigNumber.from(startTimestamp2),
-          ethers.BigNumber.from(durationSeconds2)
+          ethers.BigNumber.from(durationSeconds2),
         );
       // actually create the transaction so that the child contract can be deployed on chain
       txn = await vestingFactory.createVestingSchedule(
         beneficiary2.address,
         ethers.BigNumber.from(startTimestamp2),
-        ethers.BigNumber.from(durationSeconds2)
+        ethers.BigNumber.from(durationSeconds2),
       );
       await txn.wait();
       vestingContract2 = await VestingBase.attach(vestingWalletAddress);
@@ -226,10 +230,10 @@ describe("Vesting Contracts", function () {
       console.log("√ Pass - Load contracts with tokens");
 
       expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(
-        amount
+        amount,
       );
       expect(await arrowToken.balanceOf(vestingContract2.address)).to.equal(
-        amount2
+        amount2,
       );
 
       //No tokens should have been immediately released
@@ -263,7 +267,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        (amount * (timestampAfter - startTimestamp)) / durationSeconds
+        (amount * (timestampAfter - startTimestamp)) / durationSeconds,
       );
 
       await vestingContract2
@@ -276,7 +280,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary2.address),
-        (amount2 * (timestampAfter - startTimestamp2)) / durationSeconds2
+        (amount2 * (timestampAfter - startTimestamp2)) / durationSeconds2,
       );
 
       console.log("√ Pass - Start of first vesting");
@@ -295,7 +299,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        amount
+        amount,
       );
 
       await vestingContract2
@@ -308,7 +312,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary2.address),
-        (amount2 * (timestampAfter - startTimestamp2)) / durationSeconds2
+        (amount2 * (timestampAfter - startTimestamp2)) / durationSeconds2,
       );
 
       console.log("√ Pass - End of first vesting");
@@ -326,7 +330,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary1.address),
-        amount
+        amount,
       );
 
       await vestingContract2
@@ -339,7 +343,7 @@ describe("Vesting Contracts", function () {
 
       await assert.strictEqual(
         await arrowToken.balanceOf(beneficiary2.address),
-        amount2
+        amount2,
       );
       console.log("√ Pass - End of second vesting");
     });

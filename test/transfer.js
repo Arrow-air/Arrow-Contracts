@@ -15,7 +15,7 @@ describe("ArrowToken Transfering", function () {
     arrowToken = await upgrades.deployProxy(
       Token,
       [ethers.BigNumber.from(1_000_000), name, symbol],
-      { kind: "uups" }
+      { kind: "uups" },
     );
     await arrowToken.deployed();
   });
@@ -25,7 +25,7 @@ describe("ArrowToken Transfering", function () {
     let amount = senderBalance;
     await arrowToken.transfer(signer1.address, amount);
     expect(await arrowToken.balanceOf(owner.address)).to.equal(
-      senderBalance - amount
+      senderBalance - amount,
     );
   });
 
@@ -34,7 +34,7 @@ describe("ArrowToken Transfering", function () {
     let amount = await arrowToken.balanceOf(owner.address);
     await arrowToken.transfer(signer1.address, amount);
     expect(await arrowToken.balanceOf(signer1.address)).to.equal(
-      receiverBalance + amount
+      receiverBalance + amount,
     );
   });
 
@@ -51,7 +51,7 @@ describe("ArrowToken Transfering", function () {
     await arrowToken.transfer(signer1.address, amount);
     expect(await arrowToken.balanceOf(owner.address)).to.equal(0);
     expect(await arrowToken.balanceOf(signer1.address)).to.equal(
-      receiverBalance + amount
+      receiverBalance + amount,
     );
   });
 
@@ -61,7 +61,7 @@ describe("ArrowToken Transfering", function () {
     await arrowToken.transfer(signer1.address, 0);
     expect(await arrowToken.balanceOf(owner.address)).to.equal(senderBalance);
     expect(await arrowToken.balanceOf(signer1.address)).to.equal(
-      receiverBalance
+      receiverBalance,
     );
   });
 

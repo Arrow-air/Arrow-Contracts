@@ -1,0 +1,12 @@
+env:
+  browser: true
+  commonjs: true
+  es2021: true
+plugins:
+  ["prettier"]
+extends: ["prettier"]
+parserOptions:
+  ecmaVersion: latest
+rules:
+  prettier/prettier:
+    - error

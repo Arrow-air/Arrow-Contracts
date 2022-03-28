@@ -14,6 +14,10 @@ contract ArrowVestingBase is VestingWalletUpgradeable {
         uint64 startTimestamp,
         uint64 durationSeconds
     ) public initializer {
-        __VestingWallet_init(beneficiaryAddress, startTimestamp, durationSeconds);
+        __VestingWallet_init(
+            beneficiaryAddress,
+            startTimestamp,
+            durationSeconds
+        );
     }
 }

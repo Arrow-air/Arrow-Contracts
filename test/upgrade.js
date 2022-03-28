@@ -1,8 +1,8 @@
 const chai = require("chai");
 const { ethers, upgrades } = require("hardhat");
-const {solidity} = require("ethereum-waffle");
+const { solidity } = require("ethereum-waffle");
 chai.use(solidity);
-const {expect, assert} = chai;
+const { expect, assert } = chai;
 
 describe("Contract Upgrades", function () {
   let Token;
@@ -22,16 +22,18 @@ describe("Contract Upgrades", function () {
     arrowToken = await upgrades.deployProxy(
       Token,
       [ethers.BigNumber.from(1_000_000), name, symbol],
-      { kind: "uups" }
+      { kind: "uups" },
     );
     await arrowToken.deployed();
-    
+
     // Transfer all of owner's tokens to signer1
-    let senderBalance = ethers.BigNumber.from(await arrowToken.balanceOf(owner.address));
+    let senderBalance = ethers.BigNumber.from(
+      await arrowToken.balanceOf(owner.address),
+    );
     amountTransferredToSigner1 = senderBalance;
     await arrowToken.transfer(signer1.address, amountTransferredToSigner1);
     expect(await arrowToken.balanceOf(owner.address)).to.equal(
-      senderBalance - amountTransferredToSigner1
+      senderBalance - amountTransferredToSigner1,
     );
 
     TokenV2 = await ethers.getContractFactory("ArrowTokenV2");
@@ -41,17 +43,18 @@ describe("Contract Upgrades", function () {
   });
 
   describe("Upgrade ArrowToken to ArrowTokenV2", function () {
-
     it("V2 should have the same amount of token supplies as the older contract", async function () {
       assert.strictEqual(
         new ethers.BigNumber.from(await arrowTokenV2.totalSupply()),
         1_000_000,
-        "initial supply of 1,000,000 tokens"
+        "initial supply of 1,000,000 tokens",
       );
     });
 
     it("Should have the correct token balance for each account", async function () {
-      let ownerBalance = new ethers.BigNumber.from(await arrowTokenV2.balanceOf(owner.address));
+      let ownerBalance = new ethers.BigNumber.from(
+        await arrowTokenV2.balanceOf(owner.address),
+      );
       let signer1Balance = await arrowTokenV2.balanceOf(signer1.address);
       expect(ownerBalance).to.equal(0); // because in V1 we already transferred all of owner's tokens
       expect(signer1Balance).to.equal(amountTransferredToSigner1);
@@ -65,23 +68,23 @@ describe("Contract Upgrades", function () {
       assert.strictEqual(
         arrowTokenV2.address,
         arrowToken.address,
-        "contract address"
+        "contract address",
       );
     });
 
     it("V2 should be able to mint tokens to self", async function () {
       await arrowTokenV2.mint(
         arrowTokenV2.address,
-        ethers.BigNumber.from(1_000_000)
+        ethers.BigNumber.from(1_000_000),
       );
       expect(
-        new ethers.BigNumber.from(await arrowTokenV2.totalSupply())
+        new ethers.BigNumber.from(await arrowTokenV2.totalSupply()),
       ).to.equal(2_000_000);
     });
 
     it("V2 should be able to mint tokens to other signers", async function () {
       let signerBalanceBefore = new ethers.BigNumber.from(
-        await arrowTokenV2.balanceOf(signer1.address)
+        await arrowTokenV2.balanceOf(signer1.address),
       );
       let amount = ethers.BigNumber.from(1_000);
       expect(signerBalanceBefore).to.equal(amountTransferredToSigner1);
@@ -89,7 +92,7 @@ describe("Contract Upgrades", function () {
       await arrowTokenV2.mint(signer1.address, amount);
 
       let signerBalanceAfter = new ethers.BigNumber.from(
-        await arrowTokenV2.balanceOf(signer1.address)
+        await arrowTokenV2.balanceOf(signer1.address),
       );
 
       expect(signerBalanceAfter - amount).to.equal(signerBalanceBefore);
@@ -97,10 +100,10 @@ describe("Contract Upgrades", function () {
 
     it("V2 should have a different address from V1 and the proxy contract", async function () {
       expect(arrowTokenV2.address).not.equal(
-        await upgrades.erc1967.getImplementationAddress(arrowToken.address)
+        await upgrades.erc1967.getImplementationAddress(arrowToken.address),
       );
       expect(arrowTokenV2.address).not.equal(
-        await upgrades.erc1967.getImplementationAddress(arrowTokenV2.address)
+        await upgrades.erc1967.getImplementationAddress(arrowTokenV2.address),
       );
     });
 
@@ -109,20 +112,20 @@ describe("Contract Upgrades", function () {
       let amount = senderBalance;
       await arrowTokenV2.connect(signer1).transfer(owner.address, amount);
       expect(await arrowTokenV2.balanceOf(signer1.address)).to.equal(
-        senderBalance - amount
+        senderBalance - amount,
       );
     });
 
     it("Should increase receiver's balance", async function () {
       let receiverBalance = await arrowTokenV2.balanceOf(signer2.address);
       let amount = await arrowTokenV2.balanceOf(owner.address);
-  
+
       await arrowTokenV2.approve(signer1.address, amount);
       await arrowTokenV2
         .connect(signer1)
         .transferFrom(owner.address, signer2.address, amount);
       expect(await arrowTokenV2.balanceOf(signer2.address)).to.equal(
-        receiverBalance + amount
+        receiverBalance + amount,
       );
     });
   });
