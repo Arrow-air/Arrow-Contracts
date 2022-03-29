@@ -64,9 +64,11 @@ Upgrading contracts that are owned by a multisig should be proposed using [Defen
 
 ### Rinkeby
 
-| Contract    | Address                                    |
-| ----------- | ------------------------------------------ |
-| Gnosis Safe | 0x6943eBEfCD7d85B536aEb35BBFd95C5699158Abe |
+| Contract            | Address                                    |
+| ------------------- | ------------------------------------------ |
+| Gnosis Safe         | 0x6943eBEfCD7d85B536aEb35BBFd95C5699158Abe |
+| ArrowToken          | 0x0303e09191F692B5651a6Ab4b9953eC462CaBCB6 |
+| ArrowVestingFactory | 0x7956CB406072750D625f764eE88De07A6e33066c |
 
 ## License
 
