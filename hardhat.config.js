@@ -18,7 +18,14 @@ module.exports = {
     },
   },
 
+  defaultNetwork: "hardhat",
+
   networks: {
+    hardhat: {},
+    mainnet: {
+      url: `https://mainnet.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
+    },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]

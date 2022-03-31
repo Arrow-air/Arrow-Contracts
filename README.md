@@ -56,6 +56,8 @@ npx hardhat test
 npx hardhat deploy --network rinkeby --tags Deployment
 ```
 
+Deploying to mainnet is possible by subsituting all `--network rinkeby` arguments with `--network mainnet`.
+
 ## Upgrading
 
 Upgrading contracts that are owned by a multisig should be proposed using [Defender](https://docs.openzeppelin.com/defender/guide-upgrades)
@@ -87,6 +89,14 @@ npx hardhat deploy --network rinkeby --tags Upgrade
 6. Verify the newly deployed implementation on Etherscan.
 
 ## Deployments
+
+## Mainnet
+
+| Contract            | Address                                    |
+| ------------------- | ------------------------------------------ |
+| Gnosis Safe         | 0x03b5Dc2CE78a7bEe9F66DD619b291595a2E166BB |
+| ArrowToken          | 0x736609D310B5F925531B5ad895925CB0586F6241 |
+| ArrowVestingFactory | 0xe774395857A91f7158FB0a79385c4C9F7975B848 |
 
 ### Rinkeby
 
