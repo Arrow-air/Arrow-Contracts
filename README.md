@@ -56,6 +56,8 @@ npx hardhat test
 npx hardhat deploy --network rinkeby
 ```
 
+Deploying to mainnet is possible by subsituting all `--network rinkeby` arguments with `--network mainnet`.
+
 ## Upgrading
 
 Upgrading contracts that are owned by a multisig should be proposed using [Defender](https://docs.openzeppelin.com/defender/guide-upgrades)
