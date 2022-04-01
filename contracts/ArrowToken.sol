@@ -8,6 +8,8 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /**
     @title Arrow Token Implementation
+    @notice This is an upgradeable contract that conforms to the ERC-20 standard
+    @dev Upgrades can be made directly on this contract as versioning will be handled by git. However, one needs to keep any potential storage collisions in mind when introducing new variables/functions
 */
 contract ArrowToken is
     Initializable,
@@ -15,10 +17,17 @@ contract ArrowToken is
     OwnableUpgradeable,
     UUPSUpgradeable
 {
-    // implement the UUPS interface
+    /**
+        @notice Ensures only the owner can upgrade this contract
+        @dev Must be included for the UUPS proxy: https://docs.openzeppelin.com/contracts/4.x/api/proxy#UUPSUpgradeable
+    */
     function _authorizeUpgrade(address) internal override onlyOwner {}
 
-    /// @custom:oz-upgrades-unsafe-allow constructor
+     /**
+        @notice Makes sure that the contract is initialized
+        @dev Must be included for the UUPS proxy to prevent ownership attacks: https://forum.openzeppelin.com/t/security-advisory-initialize-uups-implementation-contracts/15301
+    */
+    ///@custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {}
 
     /** 
