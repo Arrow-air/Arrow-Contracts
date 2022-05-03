@@ -21,7 +21,7 @@ module.exports = {
 
   defaultNetwork: "hardhat",
   dodoc: {
-    runOnCompile: true,
+    runOnCompile: false,
     exclude: ["test/", "openzeppelin"],
     debugMode: false
   },

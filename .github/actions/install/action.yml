@@ -1,0 +1,19 @@
+name: Install dependencies
+description: "Checkout code and install node dependencies using cache if available"
+
+inputs:
+  node-version:
+    required: true
+    description: "The node version to use for node setup"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: "npm"
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
