@@ -5,6 +5,7 @@ require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
 require("@openzeppelin/hardhat-upgrades");
 require("@openzeppelin/hardhat-defender");
+require('@primitivefi/hardhat-dodoc');
 
 
 /**
@@ -19,7 +20,11 @@ module.exports = {
   },
 
   defaultNetwork: "hardhat",
-
+  dodoc: {
+    runOnCompile: false,
+    exclude: ["test/", "openzeppelin"],
+    debugMode: false
+  },
   networks: {
     hardhat: {},
     mainnet: {
