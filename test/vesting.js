@@ -344,4 +344,233 @@ describe("Vesting Contracts", function () {
       console.log("√ Pass - End of second vesting");
     });
   });
+
+  describe("Vesting Contract Cancelling", function () {
+    let arrowToken;
+    let vestingFactory;
+
+    let vestingContract;
+    let beneficiary;
+    let startTimestamp;
+
+    let tokenSupply = 100_000_000;
+    let duration = 100;
+    let amount = 100;
+
+    beforeEach(async function () {
+      // Deploy base contracts.
+      await ethers.provider.send("evm_setAutomine", [true]);
+
+      vestingBaseFactory = await ethers.getContractFactory("ArrowVestingBase");
+      vestingContractFactory = await ethers.getContractFactory("ArrowVestingFactory");
+      vestingFactory = await vestingContractFactory.deploy();
+      await vestingFactory.deployed()
+
+      arrowToken = await upgrades.deployProxy(
+        await ethers.getContractFactory("ArrowToken"),
+        [ethers.BigNumber.from(tokenSupply), "Arrow Token", "ARROW"],
+        { kind: "uups" }
+      );
+      await arrowToken.deployed();
+
+      // Deploy vesting contract.
+      [owner, beneficiary] = await ethers.getSigners();
+
+      const blockNum = await ethers.provider.getBlockNumber();
+      const block = await ethers.provider.getBlock(blockNum);
+      startTimestamp = block.timestamp + 10;
+
+      const vestingWalletAddress = await vestingFactory.callStatic.createVestingSchedule(
+        beneficiary.address,
+        ethers.BigNumber.from(startTimestamp),
+        ethers.BigNumber.from(duration)
+      );
+
+      tx = await vestingFactory.createVestingSchedule(
+        beneficiary.address,
+        ethers.BigNumber.from(startTimestamp),
+        ethers.BigNumber.from(duration)
+      );
+      await tx.wait();
+
+      vestingContract = await vestingBaseFactory.attach(vestingWalletAddress);
+
+      // Load the vesting contract with some tokens.
+      await arrowToken.transfer(vestingContract.address, amount);
+      await owner.sendTransaction({ to: vestingContract.address, value: amount });
+    });
+
+    it("Should have deployed vesting contract successfully", async function () {
+      expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(amount);
+      expect(await ethers.provider.getBalance(vestingContract.address)).to.equal(amount);
+      expect(await vestingContract["vestedAmount(address,uint64)"](arrowToken.address, startTimestamp)).to.equal(0);
+      expect(await vestingContract["vestedAmount(address,uint64)"](arrowToken.address, startTimestamp + duration / 2)).to.equal(amount / 2);
+    });
+
+    it("Should return all tokens to factory owner if cancelled before vesting start", async function () {
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp]);
+
+      const factoryOwner = await vestingFactory.owner();
+  
+      const ownerBalanceBefore = await arrowToken.balanceOf(factoryOwner);
+
+      tx = await vestingContract["cancel(address)"](arrowToken.address);
+      await tx.wait();
+
+      expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(0);
+      expect(await arrowToken.balanceOf(factoryOwner)).to.equal(ownerBalanceBefore.add(amount));
+    });
+
+    it("Should return all ETH to factory owner if cancelled before vesting start", async function () {
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp]);
+
+      const factoryOwner = await vestingFactory.owner();
+  
+      const ownerBalanceBefore = await ethers.provider.getBalance(factoryOwner);
+
+      tx = await vestingContract["cancel()"]();
+      receipt = await tx.wait();
+
+      gasUsedWei = receipt.gasUsed.mul(receipt.effectiveGasPrice);
+
+      expect(await ethers.provider.getBalance(vestingContract.address)).to.equal(0);
+      expect(await ethers.provider.getBalance(factoryOwner)).to.equal(ownerBalanceBefore.add(amount).sub(gasUsedWei));
+    });
+
+    it("Should distribute vested and unvested tokens fairly if cancelled during vesting", async function () {
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp + duration / 4]);
+
+      const factoryOwner = await vestingFactory.owner();
+  
+      const ownerBalanceBefore = await arrowToken.balanceOf(factoryOwner);
+      const beneficiaryBalanceBefore = await arrowToken.balanceOf(beneficiary.address);
+
+      tx = await vestingContract["cancel(address)"](arrowToken.address);
+      await tx.wait();
+
+      expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(0);
+
+      // 1/4 of vesting has occurred, so 1/4 tokens should be sent to beneficiary.
+      expect(await arrowToken.balanceOf(beneficiary.address)).to.equal(beneficiaryBalanceBefore.add(amount / 4));
+
+      // Remaining tokens should be returned to the factory owner.
+      expect(await arrowToken.balanceOf(factoryOwner)).to.equal(ownerBalanceBefore.add(amount / 4 * 3));
+    });
+
+    it("Should distribute vested and unvested ETH fairly if cancelled during vesting", async function () {
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp + duration / 4]);
+
+      const factoryOwner = await vestingFactory.owner();
+  
+      const ownerBalanceBefore = await ethers.provider.getBalance(factoryOwner);
+      const beneficiaryBalanceBefore = await ethers.provider.getBalance(beneficiary.address);
+
+      tx = await vestingContract["cancel()"]();
+      receipt = await tx.wait();
+
+      gasUsedWei = receipt.gasUsed.mul(receipt.effectiveGasPrice);
+
+      expect(await ethers.provider.getBalance(vestingContract.address)).to.equal(0);
+
+      // 1/4 of vesting has occurred, so 1/4 tokens should be sent to beneficiary.
+      expect(await ethers.provider.getBalance(beneficiary.address)).to.equal(beneficiaryBalanceBefore.add(amount / 4));
+
+      // Remaining tokens should be returned to the factory owner.
+      expect(await ethers.provider.getBalance(factoryOwner)).to.equal(ownerBalanceBefore.add(amount / 4 * 3).sub(gasUsedWei));
+    });
+
+    it("Should distribute all tokens to beneficiary if cancelled after vesting", async function () {
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp + duration]);
+
+      const factoryOwner = await vestingFactory.owner();
+  
+      const ownerBalanceBefore = await arrowToken.balanceOf(factoryOwner);
+      const beneficiaryBalanceBefore = await arrowToken.balanceOf(beneficiary.address);
+
+      tx = await vestingContract["cancel(address)"](arrowToken.address);
+      await tx.wait();
+
+      expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(0);
+      expect(await arrowToken.balanceOf(beneficiary.address)).to.equal(beneficiaryBalanceBefore.add(amount));
+      expect(await arrowToken.balanceOf(factoryOwner)).to.equal(ownerBalanceBefore);
+    });
+
+    it("Should distribute tokens to new owner after cancel if ownership was transferred", async function () {
+      // Transfer ownership to new account.
+      const accounts = await ethers.getSigners();
+      const newOwner = accounts[3];
+
+      const oldOwner = await vestingFactory.owner();
+      expect(oldOwner).to.not.equal(newOwner.address);
+
+      await vestingFactory.transferOwnership(newOwner.address);
+
+      expect(await vestingFactory.owner()).to.equal(newOwner.address);
+
+      // Cancelling should only be allowed by current owner.
+      await expect(vestingContract["cancel(address)"](arrowToken.address)).to.be.revertedWith("Not factory owner");
+
+      // Current owner should be able to cancel.
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp + duration / 4]);
+
+      const ownerBalanceBefore = await arrowToken.balanceOf(newOwner.address);
+      const beneficiaryBalanceBefore = await arrowToken.balanceOf(beneficiary.address);
+
+      tx = await vestingContract.connect(newOwner)["cancel(address)"](arrowToken.address);
+      await tx.wait();
+
+      expect(await arrowToken.balanceOf(vestingContract.address)).to.equal(0);
+      expect(await arrowToken.balanceOf(beneficiary.address)).to.equal(beneficiaryBalanceBefore.add(amount / 4));
+      expect(await arrowToken.balanceOf(newOwner.address)).to.equal(ownerBalanceBefore.add(amount / 4 * 3));
+    });
+
+    it("Should distribute ETH to new owner after cancel if ownership was transferred", async function () {
+      // Transfer ownership to new account.
+      const accounts = await ethers.getSigners();
+      const newOwner = accounts[3];
+
+      const oldOwner = await vestingFactory.owner();
+      expect(oldOwner).to.not.equal(newOwner.address);
+
+      await vestingFactory.transferOwnership(newOwner.address);
+
+      expect(await vestingFactory.owner()).to.equal(newOwner.address);
+
+      // Cancelling should only be allowed by current owner.
+      await expect(vestingContract["cancel()"]()).to.be.revertedWith("Not factory owner");
+
+      // Current owner should be able to cancel.
+      await ethers.provider.send("evm_setNextBlockTimestamp", [startTimestamp + duration / 4]);
+
+      const ownerBalanceBefore = await ethers.provider.getBalance(newOwner.address);
+      const beneficiaryBalanceBefore = await ethers.provider.getBalance(beneficiary.address);
+
+      tx = await vestingContract.connect(newOwner)["cancel()"]();
+      receipt = await tx.wait();
+
+      gasUsedWei = receipt.gasUsed.mul(receipt.effectiveGasPrice);
+
+      expect(await ethers.provider.getBalance(vestingContract.address)).to.equal(0);
+      expect(await ethers.provider.getBalance(beneficiary.address)).to.equal(beneficiaryBalanceBefore.add(amount / 4));
+      expect(await ethers.provider.getBalance(newOwner.address)).to.equal(ownerBalanceBefore.add(amount / 4 * 3).sub(gasUsedWei));
+    });
+
+    it("Should be able to update factory successfully", async function () {
+      const accounts = await ethers.getSigners();
+      const newOwner = accounts[3];
+
+      const vestingContractFactory = await ethers.getContractFactory("ArrowVestingFactory");
+      const newVestingFactory = await vestingContractFactory.connect(newOwner).deploy();
+
+      expect(newVestingFactory.address).to.not.equal(vestingFactory);
+
+      await expect(vestingContract.connect(newOwner).updateFactory(newVestingFactory.address)).to.be.revertedWith("Not factory owner");
+      await expect(vestingContract.connect(newOwner)["cancel(address)"](arrowToken.address)).to.be.revertedWith("Not factory owner");
+
+      await vestingContract.updateFactory(newVestingFactory.address);
+
+      await expect(vestingContract["cancel(address)"](arrowToken.address)).to.be.revertedWith("Not factory owner");
+      await expect(vestingContract.connect(newOwner)["cancel(address)"](arrowToken.address)).to.not.be.reverted;
+    });
+  });
 });

@@ -3,12 +3,13 @@ pragma solidity ^0.8.11;
 // SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/proxy/Clones.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "./ArrowVestingBase.sol";
 
 /**
     @title Factory contract for creating vesting wallets from their base implementations
  */
-contract ArrowVestingFactory {
+contract ArrowVestingFactory is Ownable {
     
     address public vestingImplementation;
 
