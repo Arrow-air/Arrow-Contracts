@@ -1,7 +1,8 @@
 const { BigNumber } = require("ethers");
 const { LedgerSigner } = require("@ethersproject/hardware-wallets");
 
-// This script deploys an arbitrary ERC-20 and then spins up a bathToken (permissioned admin entry) for it
+// This script deploys the Arrow Token contract and verifies the contract
+// if the target blockchain is supported by Etherscan
 const func = async (hre) => {
   // Note using both web3 and ethers here as an example. Could choose just one for simplicity, I recommend ethers
   const { deployments, upgrades, getNamedAccounts, web3, ethers } = hre;
@@ -64,7 +65,9 @@ const func = async (hre) => {
   .then(async (r) => {
 
     // Only verify on chains that are supported by Etherscan.
-    if(chain > 6) {
+    // 69 is Optimism Kovan
+    // 10 is Optimism mainnet
+    if (chain > 6 && chain !== 69 && chain !== 10) {
       return
     }
 

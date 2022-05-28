@@ -42,7 +42,9 @@ const func = async (hre) => {
   .then(async (r) => {
 
     // Only verify on chains that are supported by Etherscan.
-    if(chain > 6) {
+    // 69 is Optimism Kovan
+    // 10 is Optimism mainnet
+    if (chain > 6 && chain !== 69 && chain !== 10) {
       return
     }
 
