@@ -14,7 +14,7 @@ contract ArrowVestingFactory is Ownable {
     address public vestingImplementation;
 
     event NewVestingAgreement(
-        address beneficiaryAddress,
+        address indexed beneficiaryAddress,
         uint64 startTimestamp,
         uint64 durationSeconds,
         address vestingWalletAddress
