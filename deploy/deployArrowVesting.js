@@ -1,5 +1,6 @@
 const { BigNumber } = require("ethers");
 const { LedgerSigner } = require("@ethersproject/hardware-wallets");
+const Chains = require("../utils/Chains")
 
 const func = async (hre) => {
   // Note using both web3 and ethers here as an example. Could choose just one for simplicity, I recommend ethers
@@ -42,7 +43,7 @@ const func = async (hre) => {
   .then(async (r) => {
 
     // Only verify on chains that are supported by Etherscan.
-    if(chain > 6) {
+    if (!Chains.hasOwnProperty(chain)) {
       return
     }
 

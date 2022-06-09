@@ -42,6 +42,10 @@ module.exports = {
       chainId: 69,
       // Account specifics for testing
       timeout: 40000,
+      accounts:
+      process.env.DEPLOYMENT_PRIVATE_KEY === undefined
+        ? []
+        : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
     },
   },
   // Easy contract verification
