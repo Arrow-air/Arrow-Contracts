@@ -4,6 +4,7 @@ module.exports = Chains = {
     3: "Ropsten",
     4: "Rinkeby",
     5: "Goerli",
+    42: "Ethereum Kovan",
     69: "Optimism Kovan",
     10: "Optimism"
 }

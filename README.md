@@ -58,9 +58,6 @@ npx hardhat deploy --network rinkeby --tags Deployment
 
 Deploying to mainnet is possible by subsituting all `--network rinkeby` arguments with `--network mainnet`.
 
-
-*Note: You may need to run `npx hardhat clean` to clear all the build caches and artifacts if you encounter "no such file or directory" issues when verifying contracts (also see [here](https://github.com/NomicFoundation/hardhat/issues/1117)).*
-
 ## Upgrading
 
 Upgrading contracts that are owned by a multisig should be proposed using [Defender](https://docs.openzeppelin.com/defender/guide-upgrades)

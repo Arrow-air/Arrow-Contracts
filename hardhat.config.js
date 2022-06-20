@@ -18,7 +18,6 @@ module.exports = {
       optimizer: { enabled: true, runs: 200 },
     },
   },
-
   defaultNetwork: "hardhat",
   dodoc: {
     runOnCompile: false,
@@ -33,6 +32,10 @@ module.exports = {
     },
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
+    },
+    kovan: {
+      url: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
     },
     optimismKovan: {
@@ -63,5 +66,7 @@ module.exports = {
       default: 0,
     },
   },
-  paths: {},
+  paths: {
+    deploy: 'scripts/deploy',
+  },
 };

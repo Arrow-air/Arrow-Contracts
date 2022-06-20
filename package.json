@@ -9,8 +9,11 @@
   "scripts": {
     "test": "npx hardhat test",
     "dodoc": "npx hardhat dodoc",
+    "depositTokenToL2": "node scripts/bridge/bridgeArrowToken.js deposit",
+    "withdrawTokenToL1": "node scripts/bridge/bridgeArrowToken.js withdraw",
+    "deployEthereumKovan": "npx hardhat deploy --network kovan --tags Deployment",
     "deployOptimismKovan": "npx hardhat deploy --network optimismKovan --tags Deployment",
-    "deployL2TokenOptimismKovan": "npx hardhat deploy --network optimismKovan --tags L2Token" 
+    "deployL2TokenOptimismKovan": "npx hardhat deploy --network optimismKovan --tags L2Token"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
   "homepage": "https://github.com/Arrow-air/Arrow-Contracts#readme",
   "dependencies": {
     "@eth-optimism/contracts": "^0.5.27",
+    "@eth-optimism/sdk": "^1.1.8",
     "@nomiclabs/hardhat-ethers": "^2.0.5",
     "@nomiclabs/hardhat-etherscan": "^3.0.1",
     "@nomiclabs/hardhat-waffle": "^2.0.2",
