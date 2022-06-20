@@ -38,7 +38,7 @@ module.exports = {
     optimismKovan: {
       url: "https://kovan.optimism.io/",
       // ovm: true, // NOTE: example of how you could use a custom compiler
-      gasPrice: 10000,
+      gasPrice: 150000,
       chainId: 69,
       // Account specifics for testing
       timeout: 40000,
