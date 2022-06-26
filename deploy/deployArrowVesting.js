@@ -61,5 +61,5 @@ const func = async (hre) => {
   });
 };
 
-func.tags = ["ArrowVesting", "Deployment"];
+func.tags = ["ArrowVesting"];
 module.exports = func;

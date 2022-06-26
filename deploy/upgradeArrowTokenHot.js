@@ -29,5 +29,5 @@ const func = async (hre) => {
   console.log("Upgrade proposal created at:", proposal.url);
 }
 
-func.tags = ["ArrowERC20", "Upgrade"];
+func.tags = ["Upgrade"];
 module.exports = func;

@@ -35,17 +35,17 @@ module.exports = {
       url: `https://rinkeby.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
       accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
     },
+    kovan: {
+      url: `https://kovan.infura.io/v3/${process.env.INFURA_PROJECT_ID}`,
+      accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
+    },
     optimismKovan: {
       url: "https://kovan.optimism.io/",
-      // ovm: true, // NOTE: example of how you could use a custom compiler
-      gasPrice: 150000,
-      chainId: 69,
-      // Account specifics for testing
-      timeout: 40000,
-      accounts:
-      process.env.DEPLOYMENT_PRIVATE_KEY === undefined
-        ? []
-        : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
+      accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
+    },
+    optimism: {
+      url: "https://mainnet.optimism.io/",
+      accounts: (process.env.DEPLOYMENT_PRIVATE_KEY === undefined) ? [] : [`${process.env.DEPLOYMENT_PRIVATE_KEY}`]
     },
   },
   // Easy contract verification

@@ -1,9 +1,15 @@
 const L2StandardTokenFactoryArtifact = require(`@eth-optimism/contracts/artifacts/contracts/L2/messaging/L2StandardTokenFactory.sol/L2StandardTokenFactory.json`);
 
 const func = async (hre) => {
-  const L1TokenAddress = process.env.L1_TOKEN_ADDRESS;
-  const L2TokenName = "Arrow Air";
-  const L2TokenSymbol = "ARROW";
+  const l1TokenAddress = process.env.L1_TOKEN_ADDRESS;
+
+  if (l1TokenAddress === undefined) {
+    console.log(`error: Undefined L1_TOKEN_ADDRESS environment variable. Please define an L1 Arrow token contract to be associated with this L2 token.`);
+    return;
+  }
+
+  const l2TokenName = "Arrow Air";
+  const l2TokenSymbol = "ARROW";
 
   // Instantiate the signer
   const provider = new ethers.providers.JsonRpcProvider(hre.network.config.url);
@@ -29,9 +35,9 @@ const func = async (hre) => {
   );
 
   const tx = await l2StandardTokenFactory.createStandardL2Token(
-    L1TokenAddress,
-    L2TokenName,
-    L2TokenSymbol
+    l1TokenAddress,
+    l2TokenName,
+    l2TokenSymbol
   );
   const receipt = await tx.wait();
   const args = receipt.events.find(
@@ -44,5 +50,5 @@ const func = async (hre) => {
 }
 
 
-func.tags = ["L2Token", "Deployment"];
+func.tags = ["L2Token"];
 module.exports = func;

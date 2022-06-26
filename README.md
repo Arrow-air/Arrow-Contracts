@@ -93,13 +93,20 @@ npx hardhat deploy --network rinkeby --tags Upgrade
 
 ## Deployments
 
-## Mainnet
+### Mainnet
 
 | Contract            | Address                                    |
 | ------------------- | ------------------------------------------ |
 | Gnosis Safe         | 0x03b5Dc2CE78a7bEe9F66DD619b291595a2E166BB |
 | ArrowToken          | 0x736609D310B5F925531B5ad895925CB0586F6241 |
-| ArrowVestingFactory | 0xe774395857A91f7158FB0a79385c4C9F7975B848 |
+
+### Optimism
+
+| Contract            | Address                                    |
+| ------------------- | ------------------------------------------ |
+| Gnosis Safe         | 0xaDc17e5f0e9F755C717B2beE43B590260034b852 |
+| ArrowToken          | 0x78b3C724A2F663D11373C4a1978689271895256f |
+| ArrowVestingFactory | 0x736609D310B5F925531B5ad895925CB0586F6241 |
 
 ### Rinkeby
 
@@ -107,7 +114,19 @@ npx hardhat deploy --network rinkeby --tags Upgrade
 | ------------------- | ------------------------------------------ |
 | Gnosis Safe         | 0x6943eBEfCD7d85B536aEb35BBFd95C5699158Abe |
 | ArrowToken          | 0x0303e09191F692B5651a6Ab4b9953eC462CaBCB6 |
-| ArrowVestingFactory | 0x7956CB406072750D625f764eE88De07A6e33066c |
+
+### Kovan
+
+| Contract            | Address                                    |
+| ------------------- | ------------------------------------------ |
+| ArrowToken          | 0x736609D310B5F925531B5ad895925CB0586F6241 |
+
+### Optimistic Kovan
+
+| Contract            | Address                                    |
+| ------------------- | ------------------------------------------ |
+| ArrowToken          | 0xF16Bf805EBA1658a02FDEf9BD78f6402B74F0ED9 |
+| ArrowVestingFactory | 0x2b5098e7315e0a03bcde84f0bbe3bfe794e4cfa7 |
 
 ## License
 
