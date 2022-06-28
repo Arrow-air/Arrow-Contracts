@@ -86,5 +86,5 @@ const func = async (hre) => {
   });
 };
 
-func.tags = ["ArrowERC20", "Deployment"];
+func.tags = ["Deployment"];
 module.exports = func;
